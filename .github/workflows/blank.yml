@@ -1,0 +1,17 @@
+name: CI
+on:
+  schedule:
+    - cron: '* 23 * * *'
+env:
+  TZ: Asia/Shanghai
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a multi-line script
+        run: |
+          ping -c 4 mirrors.huaweicloud.com
+          ping -c 4 developer.aliyun.com
+          ping -c 4 mirrors.tuna.tsinghua.edu.cn
+          ping -c 4 mirrors.ustc.edu.cn
