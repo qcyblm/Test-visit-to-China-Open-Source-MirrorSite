@@ -10,7 +10,8 @@ jobs:
       runs-on: windows-latest
       steps:
         - name: ping
-          run: ping mirrors.huaweicloud.com
+          run: ping nodejs.org
+#           run: ping mirrors.huaweicloud.com
         - name: Run a multi-line script
           run: ping developer.aliyun.com
         - name: Run a multi-line script
