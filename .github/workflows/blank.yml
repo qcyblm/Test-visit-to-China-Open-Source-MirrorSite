@@ -11,11 +11,10 @@ jobs:
       steps:
         - name: Check the URL
           id: ping
-          uses: soul-wish/ping-url-javascript-action@v1.1
+          uses: nerdify/ping-action@1.0.0
           with:
-            url: 'https://mirrors.huaweicloud.com/'
-
-  
+            secrets: 'https://mirrors.huaweicloud.com/'
+   
     
 #     steps:
 #       - uses: actions/checkout@v2
