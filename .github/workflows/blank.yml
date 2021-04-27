@@ -11,15 +11,9 @@ jobs:
       steps:
         - name: ping
           run: ping mirrors.huaweicloud.com
-#     steps:
-#       - name: Run a multi-line script
-#         run:  ping -c 4 developer.aliyun.com
-#      steps:
-#       - name: Run a multi-line script
-#         run:  ping -c 4 mirrors.tuna.tsinghua.edu.cn
-#      steps:
-#       - name: Run a multi-line script
-#         run:  ping -c 4 mirrors.ustc.edu.cn
-        
-          
-         
+        - name: Run a multi-line script
+          run:  ping -c 4 developer.aliyun.com
+        - name: Run a multi-line script
+          run:  ping -c 4 mirrors.tuna.tsinghua.edu.cn
+        - name: Run a multi-line script
+          run:  ping -c 4 mirrors.ustc.edu.cn
