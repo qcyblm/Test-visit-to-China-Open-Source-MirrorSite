@@ -7,17 +7,29 @@ env:
   TZ: Asia/Shanghai
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run a multi-line script
-        run:  ping -c 4 mirrors.huaweicloud.com
-      - name: Run a multi-line script
-        run:  ping -c 4 developer.aliyun.com
-      - name: Run a multi-line script
-        run:  ping -c 4 mirrors.tuna.tsinghua.edu.cn
-      - name: Run a multi-line script
-        run:  ping -c 4 mirrors.ustc.edu.cn
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check the URL
+          id: ping
+          uses: soul-wish/ping-url-javascript-action@v1.1
+          with:
+            url: 'mirrors.huaweicloud.com'
+
+  
+    
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Run a multi-line script
+#         run:  ping -c 4 mirrors.huaweicloud.com
+#     steps:
+#       - name: Run a multi-line script
+#         run:  ping -c 4 developer.aliyun.com
+#      steps:
+#       - name: Run a multi-line script
+#         run:  ping -c 4 mirrors.tuna.tsinghua.edu.cn
+#      steps:
+#       - name: Run a multi-line script
+#         run:  ping -c 4 mirrors.ustc.edu.cn
         
           
          
