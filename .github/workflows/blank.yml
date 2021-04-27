@@ -13,7 +13,7 @@ jobs:
           id: ping
           uses: soul-wish/ping-url-javascript-action@v1.1
           with:
-            url: 'mirrors.huaweicloud.com'
+            url: 'https://mirrors.huaweicloud.com/'
 
   
     
