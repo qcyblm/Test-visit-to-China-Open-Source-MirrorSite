@@ -23,7 +23,7 @@ jobs:
           node-version:  ${{ matrix.node }}
       - name: Install dependencies
         run: yarn
-      - name: Build VuePress
+      - name: Build Hexo
         run: yarn build
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.3
