@@ -22,11 +22,7 @@ jobs:
         with:
           node-version:  ${{ matrix.node }}
       - name: Install dependencies
-        run: | 
-          yarn
-          git version
-          git config --global user.name
-          git config --global user.email
+        run: yarn
       - name: Build Hexo
         run: yarn build
       - name: Deploy to GitHub Pages
