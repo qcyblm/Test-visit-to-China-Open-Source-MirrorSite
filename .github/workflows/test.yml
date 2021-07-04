@@ -28,7 +28,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
-          repository-name: ccknbc-actions/blog-butterfly
+          repository-name: CCKNBC/ccknbc.github.io
           git-config-name: github-actions[bot]
           git-config-email: github-actions[bot]@users.noreply.github.com
           branch: master
