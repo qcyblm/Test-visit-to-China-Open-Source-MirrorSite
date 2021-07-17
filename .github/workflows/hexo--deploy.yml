@@ -22,9 +22,7 @@ jobs:
         with:
           node-version:  ${{ matrix.node }}
       - name: Install dependencies
-        run: |
-          yarn
-          yarn add -D gulp gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp-imagemin
+        run:  yarn
       - name: Build Hexo
         run: |
           yarn build
