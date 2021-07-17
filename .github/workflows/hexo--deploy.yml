@@ -22,9 +22,13 @@ jobs:
         with:
           node-version:  ${{ matrix.node }}
       - name: Install dependencies
-        run: yarn
+        run: |
+          yarn
+          yarn add -D gulp gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp-imagemin
       - name: Build Hexo
-        run: yarn build
+        run: |
+          yarn build
+          yarn gulp
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
