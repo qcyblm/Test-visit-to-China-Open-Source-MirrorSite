@@ -28,7 +28,7 @@ jobs:
           yarn build
           yarn gulp
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@dev
         with:
           git-config-name: github-actions[bot]
           git-config-email: github-actions[bot]@users.noreply.github.com
