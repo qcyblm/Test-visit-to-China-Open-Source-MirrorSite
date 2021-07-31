@@ -22,9 +22,7 @@ jobs:
         with:
           node-version:  ${{ matrix.node }}
       - name: Install dependencies
-        run:  |
-          yarn set version berry
-          yarn
+        run:  yarn
       - name: Build Hexo
         run: |
           yarn build
