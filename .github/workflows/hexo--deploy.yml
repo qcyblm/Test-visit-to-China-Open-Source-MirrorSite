@@ -3,6 +3,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.*'
+      - 'LICENSE'
+      - 'README.md'
+      - 'renovate.json'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -21,17 +26,31 @@ jobs:
         uses: actions/setup-node@main
         with:
           node-version:  ${{ matrix.node }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Install dependencies
         run:  yarn
       - name: Build Hexo
         run: |
           yarn build
           yarn gulp
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Handle Yarn cache
+        uses: actions/cache@main
+        id: yarn-cache
         with:
-          git-config-name: github-actions[bot]
-          git-config-email: github-actions[bot]@users.noreply.github.com
-          branch: gh-pages
-          token: ${{ github.token }}
-          folder: public
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Deploy to GitHub Pages
+        run: |
+          cd public
+          git config --global init.defaultBranch master
+          git init
+          git config user.name "qcyblm"
+          git config user.email "${{ secrets.GIT_EMAIL }}"
+          git add .
+          git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
+          git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git master:gh-pages
+          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/qcyblm.git master:gh-pages
