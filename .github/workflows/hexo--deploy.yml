@@ -58,7 +58,7 @@ jobs:
           git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git master:gh-pages
           git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git master:gh-pages
       - name: Gitee Pages Action
-        uses: yanglbme/gitee-pages-action@v1.2.8
+        uses: yanglbme/gitee-pages-action@v1.3.0
         with:
           gitee-username: qcyblm
           gitee-password: ${{ secrets.GITEE_PASSWORD }}
