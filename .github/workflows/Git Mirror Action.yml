@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
         with:
-          ref: 'master'
+          ref: 'main'
           persist-credentials: false
           fetch-depth: 0
         env:
@@ -19,6 +19,6 @@ jobs:
           date > generated.txt
           git config user.name qcyblm
           git config user.email ${{ secrets.GIT_EMAIL }}
-          git remote add gitee https://gitee.com/qcyblm/qcyblm.git
+          git remote add gitee https://gitee.com/qcyblm/hexo.git
           git fetch -q --all
           git push -q https://qcyblm:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git main
