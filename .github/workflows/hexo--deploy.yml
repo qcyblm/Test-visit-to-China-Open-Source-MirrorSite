@@ -40,9 +40,10 @@ jobs:
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-node-${{ matrix.node }}-yarn-
+            ${{ runner.os }}-node-
       - name: Deploy to GitHub Pages
         run: |
           cd public
@@ -53,4 +54,4 @@ jobs:
           git add .
           git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
           git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git master:gh-pages
-          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/qcyblm.git master:gh-pages
+          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git master:gh-pages
