@@ -40,9 +40,9 @@ jobs:
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-node-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-yarn-
+            ${{ runner.os }}-node-yarn-
             ${{ runner.os }}-node-
       - name: Deploy to GitHub Pages
         run: |
