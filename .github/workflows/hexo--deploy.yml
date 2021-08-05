@@ -45,6 +45,8 @@ jobs:
             ${{ runner.os }}-node-yarn-
             ${{ runner.os }}-node-
       - name: Deploy to GitHub Pages
+        env:
+          TZ: Asia/Shanghai
         run: |
           cd public
           git config --global init.defaultBranch master
@@ -55,3 +57,11 @@ jobs:
           git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
           git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git master:gh-pages
           git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git master:gh-pages
+      - name: Gitee Pages Action
+        uses: yanglbme/gitee-pages-action@v1.2.8
+        with:
+          gitee-username: qcyblm
+          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+          gitee-repo: qcyblm/hexo
+          branch: gh-pages
+          https: true
