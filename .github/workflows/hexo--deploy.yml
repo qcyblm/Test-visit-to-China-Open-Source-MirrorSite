@@ -32,9 +32,7 @@ jobs:
       - name: Install dependencies
         run:  yarn
       - name: Build Hexo
-        run: |
-          yarn build
-          yarn gulp
+        run: yarn build
       - name: Handle Yarn cache
         uses: actions/cache@main
         id: yarn-cache
