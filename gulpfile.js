@@ -1,39 +1,49 @@
-var gulp = require('gulp');
-var minifycss = require('gulp-minify-css');
-var uglify = require('gulp-uglify');
-var htmlmin = require('gulp-htmlmin');
-var htmlclean = require('gulp-htmlclean');
-var imagemin = require('gulp-imagemin');
-gulp.task('minify-css', function() {
-  return gulp.src('./public/**/*.css')
-  .pipe(minifycss())
-  .pipe(gulp.dest('./public'));
-});
-gulp.task('minify-html', function() {
-  return gulp.src('./public/**/*.html')
-  .pipe(htmlclean())
-  .pipe(htmlmin({
-    removeComments: true,
-    minifyJS: true,
-    minifyCSS: true,
-    minifyURLs: true,
-  }))
-  .pipe(gulp.dest('./public'))
-});
-gulp.task('minify-js', function() {
-    return gulp.src(['./public/**/.js','!./public/js/**/*min.js'])
-        .pipe(uglify())
+const gulp = require('gulp');
+const cleanCSS = require('gulp-clean-css');
+const htmlmin = require('gulp-html-minifier-terser');
+const htmlclean = require('gulp-htmlclean');
+const terser = require('gulp-terser');
+const workbox = require("workbox-build");
+gulp.task('compress', () =>
+  gulp.src(['./public/**/*.js', '!./public/**/*.min.js'])
+    .pipe(terser())
+    .pipe(gulp.dest('./public'))
+)
+gulp.task('minify-css', () => {
+    return gulp.src(['./public/**/*.css'])
+        .pipe(cleanCSS({
+            compatibility: 'ie11'
+        }))
         .pipe(gulp.dest('./public'));
 });
-gulp.task('minify-images', function() {
-    gulp.src('./public/demo/**/*.*')
-        .pipe(imagemin({
-           optimizationLevel: 5,
-           progressive: true,
-           interlaced: false,
-           multipass: false,
+gulp.task('minify-html', () => {
+    return gulp.src('./public/**/*.html')
+        .pipe(htmlclean())
+        .pipe(htmlmin({
+            removeComments: true,
+            collapseWhitespace: true,
+            collapseBooleanAttributes: true, 
+            removeEmptyAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true
         }))
-        .pipe(gulp.dest('./public/uploads'));
+        .pipe(gulp.dest('./public'))
 });
-gulp.task('default', gulp.parallel('minify-html', 'minify-css', 'minify-js'
-));
+gulp.task('generate-service-worker', () => {
+  return workbox.injectManifest({
+    swSrc: './sw.js',
+    swDest: './public/sw.js',
+    globDirectory: './public',
+    globPatterns: ['index.html'],
+    modifyURLPrefix: {
+        '': './'
+    }
+  }).then(({count, size, warnings}) => {
+    warnings.forEach(console.warn);
+    console.log(`${count} 文件将被预缓存 共占用 ${size/1024} Kb`);
+  });
+});
+gulp.task("default",gulp.series("generate-service-worker",gulp.parallel('compress','minify-css', 'minify-html')));
