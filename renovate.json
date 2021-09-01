@@ -1,7 +1,4 @@
 {
-"extends": [
-    "config:base"
-  ],
-"dependencyDashboard": true,
-"baseBranches": ["main"]
+    "extends": ["config:base", ":dependencyDashboardApproval"],
+    "baseBranches": ["main"]
 }
