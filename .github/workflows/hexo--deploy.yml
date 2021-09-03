@@ -49,17 +49,17 @@ jobs:
           cd public
           git config --global init.defaultBranch master
           git init
-          git config user.name "qcyblm"
-          git config user.email "${{ secrets.GIT_EMAIL }}"
+          git config user.name $GITHUB_ACTOR
+          git config user.email ${{ secrets.GIT_EMAIL }}
           git add .
           git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
           git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git master:gh-pages
-          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git master:gh-pages
+          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git master:gh-pages
       - name: Gitee Pages Action
         uses: yanglbme/gitee-pages-action@v1.3.2
         with:
-          gitee-username: qcyblm
+          gitee-username: $GITHUB_ACTOR
           gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          gitee-repo: qcyblm/hexo
+          gitee-repo: $GITHUB_REPOSITORY
           branch: gh-pages
           https: true
