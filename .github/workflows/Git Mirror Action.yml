@@ -19,4 +19,4 @@ jobs:
           date > generated.txt
           git remote add gitee https://gitee.com/$GITHUB_REPOSITORY.git
           git fetch -q --all
-          git push -q https://qcyblm:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git main
+          git push -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git main
