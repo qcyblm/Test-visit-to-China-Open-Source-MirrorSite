@@ -17,6 +17,6 @@ jobs:
           TZ: Asia/Shanghai
       - run: |
           date > generated.txt
-          git remote add gitee https://gitee.com/qcyblm/hexo.git
+          git remote add gitee https://gitee.com/$GITHUB_REPOSITORY.git
           git fetch -q --all
           git push -q https://qcyblm:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git main
