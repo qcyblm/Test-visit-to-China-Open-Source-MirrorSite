@@ -17,8 +17,6 @@ jobs:
           TZ: Asia/Shanghai
       - run: |
           date > generated.txt
-          git config user.name qcyblm
-          git config user.email ${{ secrets.GIT_EMAIL }}
           git remote add gitee https://gitee.com/qcyblm/hexo.git
           git fetch -q --all
           git push -q https://qcyblm:${{ secrets.GITEE_TOKEN }}@gitee.com/qcyblm/hexo.git main
