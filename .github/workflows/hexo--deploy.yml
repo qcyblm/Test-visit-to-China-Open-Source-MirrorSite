@@ -10,56 +10,53 @@ on:
       - 'renovate.json'
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['lts/Fermium']
+        node:
+          - 'lts/*'
+        platform:
+          - ubuntu-latest
+    name: '${{matrix.platform}} / Node.js ${{ matrix.node }}'
+    runs-on: ${{matrix.platform}}
     steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-        env:
-          TZ: Asia/Shanghai
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@main
-        with:
-          node-version:  ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Install dependencies
-        run:  yarn
-      - name: Build Hexo
-        run: yarn build
-      - name: Handle Yarn cache
-        uses: actions/cache@main
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-node-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-yarn-
-            ${{ runner.os }}-node-
-      - name: Deploy to GitHub Pages
-        env:
-          TZ: Asia/Shanghai
-        run: |
-          cd public
-          git config --global init.defaultBranch gh-pages
-          git init
-          git config user.name $GITHUB_ACTOR
-          git config user.email ${{ secrets.GIT_EMAIL }}
-          git add .
-          git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
-          git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git gh-pages
-          git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git gh-pages
-      - name: Gitee Pages Action
-        uses: yanglbme/gitee-pages-action@v1.3.2
-        with:
-          gitee-username: qcyblm
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          gitee-repo: qcyblm/hexo
-          branch: gh-pages
-          https: true
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Use Node.js
+      uses: actions/setup-node@main
+      with:
+        node-version: ${{ matrix.node }}        
+    - name: Cache .pnpm-store
+      uses: actions/cache@main
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-node${{ matrix.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+    - name: Install pnpm
+      run: curl -f https://get.pnpm.io/v6.js | node - add --global pnpm@latest
+    - name: Install dependencies
+      run: pnpm i
+    - name: Build Hexo
+      run: pnpm build
+    - name: Deploy to GitHub Pages
+      env:
+        TZ: Asia/Shanghai
+      run: |
+        cd public
+        git config --global init.defaultBranch gh-pages
+        git init
+        git config user.name $GITHUB_ACTOR
+        git config user.email ${{ secrets.GIT_EMAIL }}
+        git add .
+        git commit -q -m "Deploying to gh-pages from @ $GITHUB_SHA in $(date +"%Y年%m月%d日 %T %Z")"
+        git push -f -q https://$GITHUB_ACTOR:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git gh-pages
+        git push -f -q https://$GITHUB_ACTOR:${{ secrets.GITEE_TOKEN }}@gitee.com/$GITHUB_REPOSITORY.git gh-pages
+    - name: Gitee Pages Action
+      uses: yanglbme/gitee-pages-action@main
+      with:
+        gitee-username: ${{ github.actor }}
+        gitee-password: ${{ secrets.GITEE_PASSWORD }}
+        gitee-repo: ${{ github.repository }}
+        branch: gh-pages
+        https: true
